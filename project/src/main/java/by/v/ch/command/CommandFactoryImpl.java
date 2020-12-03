@@ -13,8 +13,7 @@ public class CommandFactoryImpl implements CommandFactory{
     //todo:load all comands from comands folder
     }
 
-    @Override
-    public CommandFactory getInstance() {
+    public static CommandFactory getInstance() {
         if(instance==null){
             instance=new CommandFactoryImpl();
         }
@@ -23,11 +22,14 @@ public class CommandFactoryImpl implements CommandFactory{
 
     @Override
     public Command getCommand(String commandName) throws CommandNotFoundException{
+        System.out.println("commandName");
         if (commands.containsKey(commandName)){
+            System.out.println("contains");
             return commands.get(commandName);
         }
         else
             {
+                System.out.println("throwing");
                 throw(new CommandNotFoundException(commandName));
             }
     }
