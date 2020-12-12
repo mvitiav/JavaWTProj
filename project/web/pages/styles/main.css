@@ -9,6 +9,15 @@
     height:100vh;
 }
 
+button[type=submit] {
+    padding: 5px 15px;
+    background: #99e0b2;
+    border: 0 none;
+    cursor: pointer;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+}
+
 ul{
     list-style-type:none;
     display:block;

@@ -7,9 +7,14 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>Order</title>
 </head>
 <body>
 <%--todo:make--%>
+
+<form action="controller" method="post">
+    <input type="submit" name="button" value="home_cmd"/>
+</form>
+
 </body>
 </html>

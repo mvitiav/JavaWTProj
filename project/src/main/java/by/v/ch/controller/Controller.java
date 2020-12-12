@@ -3,6 +3,8 @@ package by.v.ch.controller;
 import by.v.ch.command.Command;
 import by.v.ch.command.CommandFactory;
 import by.v.ch.command.CommandFactoryImpl;
+import by.v.ch.connection.ConnectionPool;
+import by.v.ch.dao.connection.ConnectionFactory;
 import by.v.ch.exceptions.CommandExecutionException;
 import by.v.ch.exceptions.CommandNotFoundException;
 import org.slf4j.Logger;
@@ -14,6 +16,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Enumeration;
 
 
 public class Controller extends HttpServlet {
@@ -21,8 +25,13 @@ public class Controller extends HttpServlet {
 
     private static CommandFactory commandFactory;
     //private static Logger logger= LoggerFactory.getLogger(Controller.class);
+    Logger logger;
+
     public Controller() {
         commandFactory = CommandFactoryImpl.getInstance();
+        logger = LoggerFactory.getLogger(Controller.class);
+        logger.info("Logger created");
+        ConnectionFactory.getInstance().init();
     }
 
     private static String getClearUri(HttpServletRequest request) {
@@ -41,17 +50,25 @@ public class Controller extends HttpServlet {
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) {
         String path = "/";
-        //logger.info("[]"+getClearUri(request));
+        logger.info(getClearUri(request));
         if (0 != getClearUri(request).compareTo("/")) {
             try {
                 //todo: log any request
-                System.out.println("getClearUri(request)");
-                Command command = commandFactory.getCommand(getClearUri(request));
-                System.out.println(command);
+
+                //todo check empty request
+              String cmdName=  request.getParameter("button");
+
+
+                logger.info("getClearUri(request)");
+                Command command = commandFactory.getCommand(cmdName);
+
+                logger.info(command.toString());
+
+
                 path = command.execute(request);
 
             } catch (CommandNotFoundException | CommandExecutionException e) {
-                System.out.println(e.getMessage());
+                logger.error(e.getMessage(),e);
                 path = "/err";
                 request.setAttribute("exception", e);
             } finally {
@@ -64,13 +81,13 @@ public class Controller extends HttpServlet {
 
     public void forward(String to, HttpServletRequest request, HttpServletResponse response) {
         request.setAttribute("contextPath",request.getContextPath());
-        System.out.println(request.getContextPath());
+        logger.info(request.getContextPath());
         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(to);
         try {
             dispatcher.forward(request, response);
 
         } catch (ServletException | IOException e) { //todo:make own type of exception
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
             //todo:drop to logger
         }
     }
