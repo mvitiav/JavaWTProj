@@ -23,6 +23,8 @@
   <form action="controller" method="post" >
   <div id = 'menu'>
     <ul>
+
+        <stl:if test="${logged_USER == null}">
       <li>
 <%--        <button onclick="location.href='controller?command=login_cmd'">Add subject--%>
   <button  type="submit"  name="button" value="login_cmd">
@@ -31,20 +33,37 @@
 <%--        </button>--%>
       </button >
       </li>
-        <li>
-            <button  type="submit"  name="button" value="register_cmd">
-                <div><i class="icon icon-login"></i></div>
-                <span>register</span>
-            </button >
-        </li>
-      <button  type="submit"  name="button" value="order_cmd">
-      <li class='first'>
-        <div>
-          <i class="icon icon-order"></i>
-        </div>
-        <span>Place<br>order</span>
-        </button >
-      </li>
+            <li>
+                <button  type="submit"  name="button" value="register_cmd">
+                    <div><i class="icon icon-login"></i></div>
+                    <span>register</span>
+                </button >
+            </li>
+        </stl:if>
+        <stl:if test="${logged_USER != null}">
+<%--            ${logged_USER.getRole()}--%>
+<%--            ${User.Role.client}--%>
+<%--            ${logged_USER.getRole().ordinal()}--%>
+
+            <stl:if test="${logged_USER.getRole().ordinal() == 0}">
+            <li class='first'>
+                <button  type="submit"  name="button" value="order_cmd">
+                    <div>
+                        <i class="icon icon-order"></i>
+                    </div>
+                    <span>Place order</span>
+                </button >
+            </li>
+            </stl:if>
+
+            <li>
+                <button  type="submit"  name="button" value="logout_cmd">
+                    <div><i class="icon icon-login"></i></div>
+                    <span>Log out</span>
+                </button >
+            </li>
+
+        </stl:if>
       <li>
         <button  type="submit"  name="button" value="about_cmd">
         <div>

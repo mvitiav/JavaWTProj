@@ -25,6 +25,7 @@ public class UserDaoImplementation implements UserDao {
     private static final String DB_COLUMN_NAME = "username";
     private static final String DB_COLUMN_SALT = "salt";
     private static final String DB_COLUMN_ID = "id_users";
+    private static final String DB_COLUMN_ROLE = "role_id";
 
     //todo move to special file
     //todo: make ame of db dynamic
@@ -148,6 +149,8 @@ public class UserDaoImplementation implements UserDao {
                 ){
                   logger.info("success");
                   ret = new User(resultSet.getInt(DB_COLUMN_ID),resultSet.getString(DB_COLUMN_NAME));
+                  logger.info("role is "+resultSet.getInt(DB_COLUMN_ROLE));
+                  ret.setRoleFromInt(resultSet.getInt(DB_COLUMN_ROLE));
                 }else {
                     logger.info("wrong pass");
                 }

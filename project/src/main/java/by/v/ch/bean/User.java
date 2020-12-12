@@ -7,11 +7,29 @@ public class User implements Serializable {
     private int id;
     private String username;
 
+    public enum Role{
+        client,driver,dispatcher
+    }
+
+    private Role role;
+
     //todo: change string ty safwe type from java.security
 
     public User(int id, String username) {
         this.id = id;
         this.username = username;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public void setRoleFromInt(int i) {
+       this.role=Role.values()[i];
     }
 
 
