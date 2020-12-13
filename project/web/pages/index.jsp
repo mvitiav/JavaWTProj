@@ -44,10 +44,6 @@
             </li>
         </stl:if>
         <stl:if test="${logged_USER != null}">
-<%--            ${logged_USER.getRole()}--%>
-<%--            ${User.Role.client}--%>
-<%--            ${logged_USER.getRole().ordinal()}--%>
-
             <stl:if test="${sessionScope.logged_USER.getRole().ordinal() == 0}">
             <li class='first'>
                 <button  type="submit"  name="button" value="order_cmd">
@@ -58,7 +54,16 @@
                 </button >
             </li>
             </stl:if>
-
+            <stl:if test="${sessionScope.logged_USER.getRole().ordinal() == 2}">
+                <li class='first'>
+                    <button  type="submit"  name="button" value="distribute_cmd">
+                        <div>
+                            <i class="icon icon-order"></i>
+                        </div>
+                        <span>Distribute orders</span>
+                    </button >
+                </li>
+            </stl:if>
             <li>
                 <button  type="submit"  name="button" value="logout_cmd">
                     <div><i class="icon icon-login"></i></div>

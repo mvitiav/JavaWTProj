@@ -1,5 +1,6 @@
 package by.v.ch.dao;
 
+import by.v.ch.bean.Client;
 import by.v.ch.bean.Order;
 
 public interface OrderDao {
@@ -10,7 +11,8 @@ public interface OrderDao {
 
     public boolean updateOrder(Order order);
 
-    public Order[] getNewOrders(int maxcount);
+    public Order[] getOrdersOfClient(Client client);
 
+    public Order[] getUnsetOrders();
 
 }

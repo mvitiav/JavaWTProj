@@ -1,5 +1,6 @@
 package by.v.ch.command.commands;
 
+import by.v.ch.bean.Order;
 import by.v.ch.bean.User;
 import by.v.ch.command.Command;
 import by.v.ch.exceptions.CommandExecutionException;
@@ -22,6 +23,10 @@ public class MakeOrderCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request) throws CommandExecutionException {
+        User user=null;
+        if(request.getSession().getAttribute("logged_USER")!=null){
+        user= (User) request.getSession().getAttribute("logged_USER");}
+
 logger.info("placeOrderCommand called from "+request.getSession().getAttribute("logged_USER"));
         ServiceFactory serviceFactory = ServiceFactory.getInstance();
 
@@ -37,7 +42,7 @@ if(requestStatus!=null){
 
         logger.info("filled:");
 
-        User user= (User) request.getSession().getAttribute("logged_USER");
+       // User user= (User) request.getSession().getAttribute("logged_USER");
         logger.info("user = "+user);
         float size= Float.parseFloat(request.getParameter("order_size"));
         logger.info("size = "+size);
@@ -70,12 +75,17 @@ if(requestStatus!=null){
                 destinationpoint,
                 1
         );
-
-
     }
 
 }
-
+        if(user!=null){
+            if(user.getRole()== User.Role.client){
+                logger.info("getting lastOrdersList");
+                Order[] orders =serviceFactory.getOrderService().getOrdersOfUser(user);
+                logger.info("lastOrderList length = "+orders.length);
+                request.setAttribute("order_last",orders);
+            }
+        }
 
         return ret;
     }

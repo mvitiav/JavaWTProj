@@ -25,4 +25,19 @@ public class OrderServiceImpl implements OrderService {
 //        ClientDao clientDao = daoFactory.getClientDao();
 //        return clientDao
     }
+
+    @Override
+    public Order[] getOrdersOfUser(User user) {
+        DaoFactory daoFactory=DaoFactory.getInstance();
+        Client client = daoFactory.getClientDao().getById(user.getId());
+        return daoFactory.getOrderDao().getOrdersOfClient(client);
+    }
+
+    @Override
+    public Order[] getUnsetOrders() {
+        DaoFactory daoFactory=DaoFactory.getInstance();
+        return daoFactory.getOrderDao().getUnsetOrders();
+    }
+
+
 }

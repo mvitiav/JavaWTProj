@@ -33,8 +33,22 @@
             <input type="hidden" name="order_status" value="filled" >
             <button type="submit" name="button" value="order_cmd">order</button>
         </form>
+
+        <p>some of your last orders:</p>
+
+        <stl:forEach var="order" items="${order_last}" >
+            <br><stl:out value="${order}">  </stl:out></br>
+        </stl:forEach>
     </stl:if>
 
+    <stl:if test="${logged_USER.getRole().ordinal() == 2}">
+        <p>new orders of clients:</p>
+
+        <stl:forEach var="order" items="${distribute_list}" >
+            <br><stl:out value="${order}">  </stl:out></br>
+        </stl:forEach>
+
+    </stl:if>
 
 </stl:if>
 

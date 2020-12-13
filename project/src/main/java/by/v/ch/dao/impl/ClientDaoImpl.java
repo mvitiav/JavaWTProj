@@ -1,7 +1,6 @@
 package by.v.ch.dao.impl;
 
 import by.v.ch.bean.Client;
-import by.v.ch.bean.Order;
 import by.v.ch.dao.ClientDao;
 import by.v.ch.dao.connection.ConnectionFactory;
 import org.slf4j.Logger;

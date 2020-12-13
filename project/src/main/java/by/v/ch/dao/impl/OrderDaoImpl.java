@@ -1,6 +1,7 @@
 package by.v.ch.dao.impl;
 
 import by.v.ch.bean.CarPurpose;
+import by.v.ch.bean.Client;
 import by.v.ch.bean.Order;
 import by.v.ch.dao.OrderDao;
 import by.v.ch.dao.connection.ConnectionFactory;
@@ -11,6 +12,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class OrderDaoImpl implements OrderDao {
     static Logger logger = LoggerFactory.getLogger(OrderDaoImpl.class);
@@ -31,6 +33,8 @@ public class OrderDaoImpl implements OrderDao {
 
     private static final String GET_ORDER_BY_ID_SQL = "SELECT * FROM new_schema.orders WHERE new_schema.orders.purpose_id = ?";
     private static final String ADD_ORDER_SQL = "INSERT INTO new_schema.orders (`client_id`, `size`, `volume`, `weight`, `shipment_date`, `destination_date`, `shipment_point`, `destination_point`) VALUES (?,?,?,?,?,?,?,?);";
+    private static final String GET_ORDERS_OF_USER_SQL = "SELECT * FROM new_schema.orders WHERE new_schema.orders.client_id = ?";
+    private static final String GET_UNSET_ORDERS = "SELECT * FROM new_schema.orders WHERE new_schema.orders.finished = 0";
 
     @Override
     public Order getOrderById(int id) {
@@ -130,8 +134,112 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public Order[] getNewOrders(int maxcount) {
+    public Order[] getOrdersOfClient(Client client) {
+        //todo: add using of maxcount
+        ArrayList<Order> orders = new ArrayList<Order>();
+        //todo add exceprion if not ofund
+        PreparedStatement statement = null;
+        Connection connection=null;
+        ResultSet resultSet = null;
 
-        return new Order[0];
+        try {
+            connection= connectionFactory.getConnection();
+            logger.info("connection got ");
+
+            statement = connection.prepareStatement(GET_ORDERS_OF_USER_SQL);
+            logger.info("statement prepared ");
+
+            statement.setInt(1, client.getClientId());
+
+            resultSet = statement.executeQuery();
+            logger.info("statement executed ");
+            if (resultSet == null) {
+                //todo:throw exception?
+                orders = null;
+                logger.info("resultSet = null ");
+            }else {
+                logger.info("resultSet != null");
+                while (resultSet.next()) {
+                    Order order = new Order(resultSet.getInt(DB_COLUMN_ID), resultSet.getInt(DB_COLUMN_CLIENT_ID));
+                    if(resultSet.findColumn(DB_COLUMN_SIZE)!=0){order.setSize(resultSet.getFloat(DB_COLUMN_SIZE));}
+                    if(resultSet.findColumn(DB_COLUMN_VOLUME)!=0){order.setVolume(resultSet.getFloat(DB_COLUMN_VOLUME));}
+                    if(resultSet.findColumn(DB_COLUMN_WEIGHT)!=0){order.setWeight(resultSet.getFloat(DB_COLUMN_WEIGHT));}
+                    if(resultSet.findColumn(DB_COLUMN_SHIPMENT_DATE)!=0){order.setShipmentDate(resultSet.getDate(DB_COLUMN_SHIPMENT_DATE));}
+                    if(resultSet.findColumn(DB_COLUMN_DESTINATION_DATE)!=0){order.setDestinationDate(resultSet.getDate(DB_COLUMN_DESTINATION_DATE));}
+                    if(resultSet.findColumn(DB_COLUMN_SHIPMENT_POINT)!=0){order.setShipmentPoint(resultSet.getString(DB_COLUMN_SHIPMENT_POINT));}
+                    if(resultSet.findColumn(DB_COLUMN_DESTINATION_POINT)!=0){order.setDestinationPoint(resultSet.getString(DB_COLUMN_DESTINATION_POINT));}
+                    if(resultSet.findColumn(DB_COLUMN_FINISHED)!=0){order.setFinished(resultSet.getBoolean(DB_COLUMN_FINISHED));}
+                    if(resultSet.findColumn(DB_COLUMN_PRICE)!=0){order.setPrice(resultSet.getFloat(DB_COLUMN_PRICE));}
+                    orders.add(order);
+                }
+            }
+
+            statement.close();
+            resultSet.close();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            //todo: check if null?
+            connectionFactory.returnConnection(connection);
+        }
+
+        if(orders!=null) {
+            Order[] arr = new Order[orders.size()];
+            return orders.toArray(arr);
+        }else {return null;}
+    }
+
+    @Override
+    public Order[] getUnsetOrders() {
+        //todo: add using of maxcount
+        ArrayList<Order> orders = new ArrayList<Order>();
+        //todo add exceprion if not ofund
+        PreparedStatement statement = null;
+        Connection connection=null;
+        ResultSet resultSet = null;
+
+        try {
+            connection= connectionFactory.getConnection();
+            logger.info("connection got ");
+
+            statement = connection.prepareStatement(GET_UNSET_ORDERS);
+            logger.info("statement prepared ");
+
+            resultSet = statement.executeQuery();
+            logger.info("statement executed ");
+            if (resultSet == null) {
+                //todo:throw exception?
+                orders = null;
+                logger.info("resultSet = null ");
+            }else {
+                logger.info("resultSet != null");
+                while (resultSet.next()) {
+                    Order order = new Order(resultSet.getInt(DB_COLUMN_ID), resultSet.getInt(DB_COLUMN_CLIENT_ID));
+                    if(resultSet.findColumn(DB_COLUMN_SIZE)!=0){order.setSize(resultSet.getFloat(DB_COLUMN_SIZE));}
+                    if(resultSet.findColumn(DB_COLUMN_VOLUME)!=0){order.setVolume(resultSet.getFloat(DB_COLUMN_VOLUME));}
+                    if(resultSet.findColumn(DB_COLUMN_WEIGHT)!=0){order.setWeight(resultSet.getFloat(DB_COLUMN_WEIGHT));}
+                    if(resultSet.findColumn(DB_COLUMN_SHIPMENT_DATE)!=0){order.setShipmentDate(resultSet.getDate(DB_COLUMN_SHIPMENT_DATE));}
+                    if(resultSet.findColumn(DB_COLUMN_DESTINATION_DATE)!=0){order.setDestinationDate(resultSet.getDate(DB_COLUMN_DESTINATION_DATE));}
+                    if(resultSet.findColumn(DB_COLUMN_SHIPMENT_POINT)!=0){order.setShipmentPoint(resultSet.getString(DB_COLUMN_SHIPMENT_POINT));}
+                    if(resultSet.findColumn(DB_COLUMN_DESTINATION_POINT)!=0){order.setDestinationPoint(resultSet.getString(DB_COLUMN_DESTINATION_POINT));}
+                    if(resultSet.findColumn(DB_COLUMN_FINISHED)!=0){order.setFinished(resultSet.getBoolean(DB_COLUMN_FINISHED));}
+                    if(resultSet.findColumn(DB_COLUMN_PRICE)!=0){order.setPrice(resultSet.getFloat(DB_COLUMN_PRICE));}
+                    orders.add(order);
+                }
+            }
+
+            statement.close();
+            resultSet.close();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            //todo: check if null?
+            connectionFactory.returnConnection(connection);
+        }
+
+        if(orders!=null) {
+            Order[] arr = new Order[orders.size()];
+            return orders.toArray(arr);
+        }else {return null;}
     }
 }
