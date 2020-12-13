@@ -12,7 +12,8 @@
     <title>Order</title>
 </head>
 <body>
-<fmt:setLocale value="${sessionScope.lang}"/>
+
+<fmt:setLocale value="${sessionScope.locale}"/>
 <fmt:setBundle basename="prop"/>
 <%--todo:make--%>
 
@@ -22,19 +23,19 @@
     <div><fmt:message key="youAreLogged"/>${logged_USER.getUsername()}</div>
     <stl:if test="${logged_USER.getRole().ordinal() == 0}">
         <form action="controller" method="post">
-            Please enter your order info:
-            <p><input name="order_size"></p>
-            <p><input name="order_volume"></p>
-            <p><input name="order_weight"></p>
-            <p><input name="order_shipmentDate" type="date"></p>
-            <p><input name="order_destinationDate" type="date"></p>
-            <p><input name="order_shipmentPoint"></p>
-            <p><input name="order_destinationPoint"></p>
+            <fmt:message key="enterOrderInfo"/>
+            <p><fmt:message key="prop_order_size"/><input name="order_size"></p>
+            <p><fmt:message key="prop_order_volume"/><input name="order_volume"></p>
+            <p><fmt:message key="prop_order_weight"/><input name="order_weight"></p>
+            <p><fmt:message key="prop_order_shipmentDate"/><input name="order_shipmentDate" type="date"></p>
+            <p><fmt:message key="prop_order_destinationDate"/><input name="order_destinationDate" type="date"></p>
+            <p><fmt:message key="prop_order_shipmentPoint"/><input name="order_shipmentPoint"></p>
+            <p><fmt:message key="prop_order_destinationPoint"/><input name="order_destinationPoint"></p>
             <input type="hidden" name="order_status" value="filled" >
-            <button type="submit" name="button" value="order_cmd">order</button>
+            <button type="submit" name="button" value="order_cmd"><fmt:message key="prop_order_cmd"/></button>
         </form>
 
-        <p>some of your last orders:</p>
+        <p> <fmt:message key="prop_last_orders"/></p>
 
         <stl:forEach var="order" items="${order_last}" >
             <br><stl:out value="${order}">  </stl:out></br>
@@ -54,7 +55,7 @@
 
 
 <form action="controller" method="post">
-    <button type="submit" name="button" value="home_cmd">home</button>
+    <button type="submit" name="button" value="home_cmd"><fmt:message key="prop_home_cmd"/></button>
 </form>
 
 </body>

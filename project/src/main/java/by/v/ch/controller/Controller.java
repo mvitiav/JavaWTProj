@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Locale;
 
 
 public class Controller extends HttpServlet {
@@ -81,6 +82,16 @@ public class Controller extends HttpServlet {
         logger.info(request.getContextPath());
         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(to);
         try {
+
+           // logger.info("locale was "+ request.getLocale());
+            if((request.getSession().getAttribute("locale")!=null)&&
+                    (request.getSession().getAttribute("locale")!=request.getLocale())){
+                logger.info("loclae changed");
+                logger.info("locale = ",request.getSession().getAttribute("locale"));
+                response.setLocale((Locale) request.getSession().getAttribute("locale"));
+            }
+         //   logger.info("locale will be "+ response.getLocale());
+
             dispatcher.forward(request, response);
 
         } catch (ServletException | IOException e) { //todo:make own type of exception

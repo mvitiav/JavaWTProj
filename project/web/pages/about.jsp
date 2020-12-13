@@ -12,6 +12,8 @@
 </head>
 <body>
 <%--${carPurpose1}--%>
+
+<%--todo: add car image to bg and cartype images--%>
 <h2>These types of cars are available:</h2>
 <stl:forEach var="data" items="${carPurposes}" >
     <br><stl:out value="${data.getName()}">  </stl:out></br>

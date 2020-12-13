@@ -23,6 +23,7 @@ public class CommandFactoryImpl implements CommandFactory{
         commands.put("register_cmd",new RegisterCommand());
         commands.put("logout_cmd",new LogOutCommand());
         commands.put("distribute_cmd",new DistributeOrdersCommand());
+        commands.put("lang_cmd",new ChangeLocaleCommand());
     }
 
     public static CommandFactory getInstance() {

@@ -15,7 +15,9 @@
     </style>
   </head>
   <body>
-  <fmt:setLocale value="${sessionScope.lang}"/>
+
+
+  <fmt:setLocale value="${sessionScope.locale}"/>
   <fmt:setBundle basename="prop"/>
   <%--todo:clean fix style--%>
 
@@ -32,14 +34,14 @@
 <%--        <button onclick="location.href='controller?command=login_cmd'">Add subject--%>
   <button  type="submit"  name="button" value="login_cmd">
         <div><i class="icon icon-login"></i></div>
-        <span>Log in</span>
+        <span> <fmt:message key="btn_login"/></span>
 <%--        </button>--%>
       </button >
       </li>
             <li>
                 <button  type="submit"  name="button" value="register_cmd">
                     <div><i class="icon icon-login"></i></div>
-                    <span>register</span>
+                    <span> <fmt:message key="btn_register"/></span>
                 </button >
             </li>
         </stl:if>
@@ -50,7 +52,7 @@
                     <div>
                         <i class="icon icon-order"></i>
                     </div>
-                    <span>Place order</span>
+                    <span> <fmt:message key="btn_placeOrder"/></span>
                 </button >
             </li>
             </stl:if>
@@ -67,7 +69,7 @@
             <li>
                 <button  type="submit"  name="button" value="logout_cmd">
                     <div><i class="icon icon-login"></i></div>
-                    <span>Log out</span>
+                    <span> <fmt:message key="btn_logout"/></span>
                 </button >
             </li>
 
@@ -76,9 +78,18 @@
         <button  type="submit"  name="button" value="about_cmd">
         <div>
           <i class="icon icon-question"></i></div>
-        <span>About us</span>
+        <span> <fmt:message key="btn_aboutUs"/></span>
         </button >
       </li>
+
+        <li>
+            <button  type="submit"  name="button" value="lang_cmd">
+                <div>
+                    <i class="icon icon-question"></i></div>
+                <span>Change language</span>
+            </button >
+        </li>
+
     </ul>
   </div>
   </form>

@@ -6,29 +6,34 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="stl"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <html>
 <head>
     <title>Login</title>
 </head>
 <body>
+<fmt:setLocale value="${sessionScope.locale}"/>
+<fmt:setBundle basename="prop"/>
 
 <form action="controller" method="post">
 
     <stl:if test="${login_status == 'new'}">
-        Please enter your login info:
+        <fmt:message key="prop_login_enterinfo"/>
         <input id="name" name="login_name" required>
         <input id="pass" type="password" name="login_password" required>
-        <button  type="submit"  name="button" value="login_cmd">log in</button >
+        <button  type="submit"  name="button" value="login_cmd"><fmt:message key="btn_login"/></button >
     </stl:if>
 
     <stl:if test="${login_status == 'fail'}">
-        Something went wrong! Try again:
+        <fmt:message key="prop_try_again"/>
         <input id="name" name="login_name" value="${login_name}" required>
         <input id="pass" type="password" name="login_password" required>
-        <button  type="submit"  name="button" value="login_cmd">log in</button >
+        <button  type="submit"  name="button" value="login_cmd"><fmt:message key="btn_login"/></button >
     </stl:if>
-    back to main:
-    <button  type="submit"  name="button" value="home_cmd">home</button >
+</form>
+
+<form action="controller" method="post">
+    <button  type="submit"  name="button" value="home_cmd"><fmt:message key="prop_home_cmd"/></button >
 </form>
 
 </body>
