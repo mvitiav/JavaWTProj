@@ -14,4 +14,13 @@ public class TruckServiceImpl implements TruckService {
         return purposeDao.getById(id);
 
     }
+
+    @Override
+    public CarPurpose[] getAllCarPurposes() {
+        DaoFactory daoFactory=DaoFactory.getInstance();
+        PurposeDao purposeDao = daoFactory.getPurposeDao();
+        return purposeDao.getAllPurposes();
+    }
+
+
 }

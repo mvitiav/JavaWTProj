@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class PurposeDaoImpl implements PurposeDao {
     static Logger logger = LoggerFactory.getLogger(PurposeDaoImpl.class);
@@ -23,6 +24,7 @@ public class PurposeDaoImpl implements PurposeDao {
     //todo move to special file
     //todo: make ame of db dynamic
     private static final String GET_PURPOSE_BY_ID_SQL = "SELECT * FROM new_schema.purpose WHERE new_schema.purpose.purpose_id = ?";
+    private static final String GET_PURPOSES_SQL = "SELECT * FROM new_schema.purpose";
 
     @Override
     public CarPurpose getById(int id) {
@@ -43,7 +45,7 @@ public class PurposeDaoImpl implements PurposeDao {
             resultSet = statement.executeQuery();
             if (resultSet == null)
                 //todo:throw exception?
-                return null;
+                purpose= null;
 
             //List<Question> questions = new ArrayList<Question>();
          //   while (resultSet.next()) {
@@ -71,5 +73,51 @@ public class PurposeDaoImpl implements PurposeDao {
         }
         return purpose;
         //return null;
+    }
+
+    @Override
+    public CarPurpose[] getAllPurposes() {
+        logger.info("proessing getAllPurposes request: ");
+        ArrayList<CarPurpose> carPurposes = new ArrayList<CarPurpose>();
+        //todo add exceprion if not ofund
+        PreparedStatement statement = null;
+        Connection connection=null;
+        ResultSet resultSet = null;
+
+        try {
+            connection= connectionFactory.getConnection();
+            logger.info("connection got ");
+
+            statement = connection.prepareStatement(GET_PURPOSES_SQL);
+            logger.info("statement prepared ");
+
+            resultSet = statement.executeQuery();
+            logger.info("statement executed ");
+            if (resultSet == null) {
+                //todo:throw exception?
+                carPurposes = null;
+                logger.info("resultSet = null ");
+            }else {
+                logger.info("resultSet != null");
+                while (resultSet.next()) {
+                    carPurposes.add(new CarPurpose(resultSet.getInt(DB_COLUMN_ID), resultSet.getString(DB_COLUMN_NAME)));
+                    logger.info(resultSet.getString(DB_COLUMN_NAME));
+                }
+            }
+
+            statement.close();
+            resultSet.close();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            //todo: check if null?
+            connectionFactory.returnConnection(connection);
+        }
+
+        if(carPurposes!=null) {
+            CarPurpose[] arr = new CarPurpose[carPurposes.size()];
+            return carPurposes.toArray(arr);
+        }else {return null;}
+
     }
 }

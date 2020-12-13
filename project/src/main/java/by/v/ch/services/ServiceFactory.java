@@ -1,6 +1,7 @@
 package by.v.ch.services;
 
 import by.v.ch.command.commands.ShowInfoCommand;
+import by.v.ch.services.impl.OrderServiceImpl;
 import by.v.ch.services.impl.TruckServiceImpl;
 import by.v.ch.services.impl.UserServiceImpl;
 import org.slf4j.Logger;
@@ -18,9 +19,14 @@ public class ServiceFactory {
     }
     private final UserService userService = new UserServiceImpl();
     private final TruckService truckService = new TruckServiceImpl();
+    private final OrderService orderService = new OrderServiceImpl();
 
     public UserService getUserService() {
         return userService;
+    }
+
+    public OrderService getOrderService() {
+        return orderService;
     }
 
     public TruckService getTruckService() {

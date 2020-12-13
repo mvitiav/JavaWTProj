@@ -17,8 +17,10 @@ public class ShowInfoCommand implements Command {
         ServiceFactory serviceFactory = ServiceFactory.getInstance();
         logger.info("got instance");
         CarPurpose purpose= serviceFactory.getTruckService().getCarPurposeById(1);
+        CarPurpose[] purposes= serviceFactory.getTruckService().getAllCarPurposes();
         logger.info("got purpose");
         request.setAttribute("carPurpose1",purpose);
+        request.setAttribute("carPurposes",purposes);
         logger.info("returning");
         return "/pages/about.jsp";
         //return null;

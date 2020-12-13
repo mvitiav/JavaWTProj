@@ -17,7 +17,8 @@ public class LogOutCommand implements Command {
         logger.info("logOut request!");
 
         //todo make it with session?
-        request.setAttribute("logged_USER",null);
+//        request.setAttribute("logged_USER",null);
+        request.getSession().setAttribute("logged_USER",null);
 
         return ret;
     }

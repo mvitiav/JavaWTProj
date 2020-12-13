@@ -29,7 +29,8 @@ public class OrderDaoImpl implements OrderDao {
     private static final String DB_COLUMN_FINISHED = "finished";
     private static final String DB_COLUMN_PRICE = "price";
 
-    private static final String GET_ORDER_BY_ID_SQL = "SELECT * FROM new_schema.orders WHERE new_schema.purpose.purpose_id = ?";
+    private static final String GET_ORDER_BY_ID_SQL = "SELECT * FROM new_schema.orders WHERE new_schema.orders.purpose_id = ?";
+    private static final String ADD_ORDER_SQL = "INSERT INTO new_schema.orders (`client_id`, `size`, `volume`, `weight`, `shipment_date`, `destination_date`, `shipment_point`, `destination_point`) VALUES (?,?,?,?,?,?,?,?);";
 
     @Override
     public Order getOrderById(int id) {
@@ -82,8 +83,44 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public boolean addOrder(Order order) {
+        logger.info("adding order : "+order);
+        boolean ret=false;
+        PreparedStatement statement = null;
+        Connection connection=null;
+        try {
+            connection= connectionFactory.getConnection();
+            statement = connection.prepareStatement(ADD_ORDER_SQL);
 
-        return false;
+            logger.info("statement prepared");
+
+            statement.setInt(1, order.getClientId());
+            statement.setFloat(2, order.getSize());
+            statement.setFloat(3, order.getVolume());
+            statement.setFloat(4,  order.getWeight());
+            statement.setDate(5, new java.sql.Date(order.getShipmentDate().getTime()));
+            statement.setDate(6, new java.sql.Date(order.getDestinationDate().getTime()));
+            statement.setString(7, order.getShipmentPoint());
+            statement.setString(8, order.getDestinationPoint());
+
+
+            logger.info("statement set");
+            int res = statement.executeUpdate();
+            logger.info("statement executed");
+
+
+            //  }
+            statement.close();
+            ret=true;
+            //return purpose;
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            //todo: check if null?
+            connectionFactory.returnConnection(connection);
+        }
+
+        return ret;
     }
 
     @Override

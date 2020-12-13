@@ -3,7 +3,6 @@ package by.v.ch.controller;
 import by.v.ch.command.Command;
 import by.v.ch.command.CommandFactory;
 import by.v.ch.command.CommandFactoryImpl;
-import by.v.ch.connection.ConnectionPool;
 import by.v.ch.dao.connection.ConnectionFactory;
 import by.v.ch.exceptions.CommandExecutionException;
 import by.v.ch.exceptions.CommandNotFoundException;
@@ -16,8 +15,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Enumeration;
 
 
 public class Controller extends HttpServlet {

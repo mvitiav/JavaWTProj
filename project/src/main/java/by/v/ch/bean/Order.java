@@ -47,6 +47,18 @@ public class Order implements Serializable {
         return id == order.id;
     }
 
+    public Order(int clientId, String shipmentPoint, String destinationPoint, Date shipmentDate, Date destinationDate, float size, float volume, float weight, CarPurpose purpose) {
+        this.clientId = clientId;
+        this.shipmentPoint = shipmentPoint;
+        this.destinationPoint = destinationPoint;
+        this.shipmentDate = shipmentDate;
+        this.destinationDate = destinationDate;
+        this.size = size;
+        this.volume = volume;
+        this.weight = weight;
+        this.purpose = purpose;
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(id);

@@ -6,4 +6,7 @@ public interface TruckService {
     //todo: change to get list of purposes;
     //todo add cache
     public CarPurpose getCarPurposeById(int id);
+
+    public CarPurpose[] getAllCarPurposes();
+
 }

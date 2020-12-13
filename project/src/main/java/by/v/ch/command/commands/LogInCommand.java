@@ -31,7 +31,8 @@ public class LogInCommand implements Command {
 
             if(user!=null){
                 request.setAttribute("login_status","success");
-                request.setAttribute("logged_USER",user);
+//                request.setAttribute("logged_USER",user);
+                request.getSession().setAttribute("logged_USER",user);
                 ret="/pages/index.jsp";
             }else {
                 request.setAttribute("login_status","fail");
