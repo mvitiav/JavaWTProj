@@ -7,6 +7,13 @@ public class Dispatcher implements Serializable {
 
     //todo: add serializabvle empty constructors + etc
 
+
+    public Dispatcher(int dispatcherId, int userId, int maxDrivers) {
+        this.dispatcherId = dispatcherId;
+        this.userId = userId;
+        this.maxDrivers = maxDrivers;
+    }
+
     private int dispatcherId;
 
     private int userId;

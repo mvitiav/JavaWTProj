@@ -1,8 +1,9 @@
 package by.v.ch.dao.impl;
 
 import by.v.ch.bean.Client;
+import by.v.ch.bean.Dispatcher;
 import by.v.ch.bean.User;
-import by.v.ch.dao.ClientDao;
+import by.v.ch.dao.DispatcherDao;
 import by.v.ch.dao.connection.ConnectionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,42 +13,42 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class ClientDaoImpl implements ClientDao {
-
-    static Logger logger = LoggerFactory.getLogger(ClientDaoImpl.class);
+public class DispatcherDaoImpl implements DispatcherDao {
+    static Logger logger = LoggerFactory.getLogger(DispatcherDao.class);
 
     private static final ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
 
-    private static final String DB_COLUMN_ID = "idclients";
-    private static final String DB_COLUMN_USER_ID = "user_id";
+    private static final String DB_COLUMN_ID = "iddispatchers";
+    private static final String DB_COLUMN_USER_ID = "userid";
+    private static final String DB_COLUMN_MAX_DRIVERS = "max_drivers";
 
-    private static final String GET_CLIENT_BY_ID_SQL = "SELECT * FROM new_schema.clients WHERE new_schema.clients.user_id = ?";
-    private static final String ADD_CLIENT_SQL = "INSERT INTO new_schema.clients (`user_id`) VALUES (?);";
+    private static final String GET_DISPATCHER_BY_USER_ID_SQL = "SELECT * FROM new_schema.dispatchers WHERE new_schema.dispatchers.user_id = ?";
+    private static final String ADD_DISPATCHER_SQL = "INSERT INTO new_schema.dispatchers (`userid`) VALUES (?);";
 
     @Override
-    public Client getByUser(User user) {
+    public Dispatcher getByUser(User user) {
         int user_id=user.getId();
         logger.info("processing getById request: "+user_id);
         //todo add exceprion if not ofund
-        Client client=null;
+        Dispatcher dispatcher=null;
         PreparedStatement statement = null;
         Connection connection=null;
         ResultSet resultSet = null;
         try {
             connection= connectionFactory.getConnection();
-            statement = connection.prepareStatement(GET_CLIENT_BY_ID_SQL);
+            statement = connection.prepareStatement(GET_DISPATCHER_BY_USER_ID_SQL);
             statement.setInt(1, user_id);
             resultSet = statement.executeQuery();
             if (resultSet == null){
-                client =null;
+                dispatcher =null;
             }
 
             if(resultSet.next()) {
-                client = new Client(resultSet.getInt(DB_COLUMN_ID), resultSet.getInt(DB_COLUMN_USER_ID));
+                dispatcher = new Dispatcher(resultSet.getInt(DB_COLUMN_ID),resultSet.getInt(DB_COLUMN_USER_ID),resultSet.getInt(DB_COLUMN_USER_ID));
             }
             else
             {
-                client= null;
+                dispatcher= null;
                 //todo throw exception or log something
             }
 
@@ -61,7 +62,7 @@ public class ClientDaoImpl implements ClientDao {
             //todo: check if null?
             connectionFactory.returnConnection(connection);
         }
-        return client;
+        return dispatcher;
     }
 
     @Override
@@ -72,16 +73,11 @@ public class ClientDaoImpl implements ClientDao {
         Connection connection=null;
         try {
             connection= connectionFactory.getConnection();
-            statement = connection.prepareStatement(ADD_CLIENT_SQL);
-
+            statement = connection.prepareStatement(ADD_DISPATCHER_SQL);
             statement.setInt(1,user_id);
-
             int res = statement.executeUpdate();
-
             statement.close();
             ret=true;
-
-
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         } finally {

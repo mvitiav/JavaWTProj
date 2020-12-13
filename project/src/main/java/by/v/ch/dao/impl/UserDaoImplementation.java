@@ -30,8 +30,9 @@ public class UserDaoImplementation implements UserDao {
     //todo move to special file
     //todo: make ame of db dynamic
     private static final String GET_PURPOSE_BY_ID_SQL = "SELECT * FROM new_schema.purpose WHERE new_schema.purpose.purpose_id = ?";
-    private static final String INSERT_NEW_USER_SQL = "INSERT INTO new_schema.users (`username`, `passHash`, `salt`) VALUES (?,?,?);";
+    private static final String INSERT_NEW_USER_SQL = "INSERT INTO new_schema.users (`username`, `passHash`, `salt`, `role_id`) VALUES (?,?,?,?);";
     private static final String LOG_IN_SQL = "SELECT * FROM new_schema.users WHERE new_schema.users.username = ?;";
+    private static final String DELETE_USER_SQL = "DELETE FROM new_schema.purpose WHERE `id_users` = ?);";
 
     private static String generateSalt(){
         byte[] array = new byte[45];
@@ -77,7 +78,7 @@ public class UserDaoImplementation implements UserDao {
     }
 
     @Override
-    public boolean register(String name, String pass) {
+    public boolean register(String name, String pass,User.Role role) {
         logger.info("register called");
         boolean ret=false;
         Connection connection=null;
@@ -95,6 +96,7 @@ public class UserDaoImplementation implements UserDao {
             statement.setString(1,name);
             statement.setString(2,hash);
             statement.setString(3,salt);
+            statement.setInt(4,role.ordinal());
 
             logger.info("executing statement");
             int res=statement.executeUpdate();
@@ -110,6 +112,34 @@ public class UserDaoImplementation implements UserDao {
             ConnectionFactory.getInstance().returnConnection(connection);
         }
 
+        return ret;
+    }
+
+    @Override
+    public boolean delete(User user) {
+        logger.info("delete called");
+        boolean ret=false;
+        Connection connection=null;
+        PreparedStatement statement = null;
+        try {
+            logger.info("getting connection");
+            connection=ConnectionFactory.getInstance().getConnection();
+            logger.info("connection got");
+            statement=connection.prepareStatement(DELETE_USER_SQL);
+            logger.info("Statement prepared");
+            statement.setInt(1,user.getId());
+            logger.info("executing statement");
+            int res=statement.executeUpdate();
+            logger.info("statement executed");
+            statement.close();
+
+            //todo: check
+            ret=true;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            ConnectionFactory.getInstance().returnConnection(connection);
+        }
         return ret;
     }
 

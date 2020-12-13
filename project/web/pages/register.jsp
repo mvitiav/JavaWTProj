@@ -21,6 +21,11 @@
         <fmt:message key="prop_register_enterinfo"/>
         <input id="name" name="register_name" required>
         <input id="pass" type="password" name="register_password" required>
+        <select  name="register_role">
+            <option value="0"><fmt:message key="prop_role_user"/></option>
+            <option value="1"><fmt:message key="prop_role_driver"/></option>
+            <option value="2"><fmt:message key="prop_role_dispatcher"/></option>
+        </select>
         <button  type="submit"  name="button" value="register_cmd"><fmt:message key="btn_register"/></button >
     </stl:if>
 
@@ -32,6 +37,11 @@
         <fmt:message key="prop_try_again"/>
         <input id="name" name="register_name" value="${login_name}" required>
         <input id="pass" type="password" name="register_password" required>
+        <select  name="register_role">
+            <option value="0"><fmt:message key="prop_role_user"/></option>
+            <option value="1"><fmt:message key="prop_role_driver"/></option>
+            <option value="2"><fmt:message key="prop_role_dispatcher"/></option>
+        </select>
         <button  type="submit"  name="button" value="register_cmd"><fmt:message key="btn_register"/></button >
     </stl:if>
 </form>

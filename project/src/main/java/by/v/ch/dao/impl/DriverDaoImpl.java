@@ -29,7 +29,7 @@ public class DriverDaoImpl implements DriverDao {
 
 
     private static final String GET_DRIVER_BY_ID_SQL = "SELECT * FROM new_schema.drivers WHERE new_schema.drivers.user_id = ?";
-    private static final String ADD_DRIVER_SQL = "INSERT INTO new_schema.drivers (`user_id`) VALUES (?);";
+    private static final String ADD_DRIVER_SQL = "INSERT INTO new_schema.drivers (`id_of_user`) VALUES (?);";
     private static final String GET_DRIVERS_OF_DISPATCHER = "SELECT * FROM new_schema.drivers WHERE new_schema.drivers.disp_id = ?";
 
     @Override

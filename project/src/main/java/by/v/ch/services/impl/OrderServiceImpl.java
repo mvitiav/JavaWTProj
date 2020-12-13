@@ -4,9 +4,6 @@ import by.v.ch.bean.CarPurpose;
 import by.v.ch.bean.Client;
 import by.v.ch.bean.Order;
 import by.v.ch.bean.User;
-import by.v.ch.dao.ClientDao;
-import by.v.ch.dao.PurposeDao;
-import by.v.ch.dao.UserDao;
 import by.v.ch.dao.factory.DaoFactory;
 import by.v.ch.services.OrderService;
 
@@ -17,7 +14,7 @@ public class OrderServiceImpl implements OrderService {
     public boolean addOrder(User user, float size, float volume, float weight, Date shipmentDate, Date destinationDate, String shipmentpoint, String destinationpoint,int purposeId) {
         DaoFactory daoFactory=DaoFactory.getInstance();
 
-        Client client = daoFactory.getClientDao().getById(user.getId());
+        Client client = daoFactory.getClientDao().getByUser(user);
 
         CarPurpose carPurpose =daoFactory.getPurposeDao().getById(purposeId);
         //int clientId, String shipmentPoint, String destinationPoint, Date shipmentDate, Date destinationDate, float size, float volume, float weight, CarPurpose purpose
@@ -35,7 +32,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order[] getOrdersOfUser(User user) {
         DaoFactory daoFactory=DaoFactory.getInstance();
-        Client client = daoFactory.getClientDao().getById(user.getId());
+        Client client = daoFactory.getClientDao().getByUser(user);
         Order[] orders= daoFactory.getOrderDao().getOrdersOfClient(client);
         //todo:change status of order from TripDao
         //todo: create TripDao
