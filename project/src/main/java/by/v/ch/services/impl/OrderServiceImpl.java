@@ -30,7 +30,10 @@ public class OrderServiceImpl implements OrderService {
     public Order[] getOrdersOfUser(User user) {
         DaoFactory daoFactory=DaoFactory.getInstance();
         Client client = daoFactory.getClientDao().getById(user.getId());
-        return daoFactory.getOrderDao().getOrdersOfClient(client);
+        Order[] orders= daoFactory.getOrderDao().getOrdersOfClient(client);
+        //todo:change status of order from TripDao
+        //todo: create TripDao
+        return orders;
     }
 
     @Override

@@ -19,6 +19,12 @@ public class Order implements Serializable {
     private CarPurpose purpose;
     private boolean finished;
 
+    public enum OrderStatus{
+        reviewed,delivered,ordered
+    }
+
+    private OrderStatus status;
+
     public boolean isFinished() {
         return finished;
     }
@@ -47,7 +53,16 @@ public class Order implements Serializable {
         return id == order.id;
     }
 
+    public OrderStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(OrderStatus status) {
+        this.status = status;
+    }
+
     public Order(int clientId, String shipmentPoint, String destinationPoint, Date shipmentDate, Date destinationDate, float size, float volume, float weight, CarPurpose purpose) {
+        this.status=OrderStatus.reviewed;
         this.clientId = clientId;
         this.shipmentPoint = shipmentPoint;
         this.destinationPoint = destinationPoint;
@@ -105,6 +120,7 @@ public class Order implements Serializable {
     }
 
     public Order(int id, int clientId) {
+        this.status=OrderStatus.reviewed;
         this.id = id;
         this.clientId = clientId;
     }

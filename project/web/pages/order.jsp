@@ -38,13 +38,23 @@
         <p> <fmt:message key="prop_last_orders"/></p>
 
         <stl:forEach var="order" items="${order_last}" >
-            <br><stl:out value="${order}">  </stl:out></br>
+            <br>
+            <stl:out value="${order.getShipmentPoint()} [${order.getShipmentDate()}] => ${order.getDestinationPoint()} [${order.getDestinationDate()}]"></stl:out>
+            (<stl:if test="${order.getStatus().ordinal() == 0}">
+            <fmt:message key="prop_order_status_reviewed"/>
+        </stl:if>
+            <stl:if test="${order.getStatus().ordinal() == 1}">
+                <fmt:message key="prop_order_status_delivered"/>
+            </stl:if>
+            <stl:if test="${order.getStatus().ordinal() == 2}">
+                <fmt:message key="prop_order_status_reviewed"/>
+            </stl:if>
+            )</br>
         </stl:forEach>
     </stl:if>
 
     <stl:if test="${logged_USER.getRole().ordinal() == 2}">
         <p>new orders of clients:</p>
-
         <stl:forEach var="order" items="${distribute_list}" >
             <br><stl:out value="${order}">  </stl:out></br>
         </stl:forEach>
