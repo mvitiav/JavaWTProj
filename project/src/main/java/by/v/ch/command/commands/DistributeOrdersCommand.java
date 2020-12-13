@@ -32,50 +32,29 @@ public class DistributeOrdersCommand implements Command {
 
         if(requestStatus!=null){
             logger.info("requestStatus = "+(String)requestStatus);
-            if(0==((String) requestStatus).compareTo("selected")){
 
-                //addOrder(User user, float size, float volume, float weight, Date shipmentDate, Date destinationDate, String shipmentpoint, String destinationpoint,int purposeId);
+            if((0==((String) requestStatus).compareTo("selected"))&&
+                    (null!=request.getParameter("distribute_order"))){
+             int orderId=Integer.parseInt(request.getParameter("distribute_order"));
+             logger.info("order id ="+orderId);
+            Order order=serviceFactory.getOrderService().getById(orderId);
+            if(order!=null)
+                logger.info(order.toString());
+             request.setAttribute("distribute_order_instance",order);
+                request.setAttribute("distribute_status","review");
 
-                logger.info("filled:");
-
-                // User user= (User) request.getSession().getAttribute("logged_USER");
-                logger.info("user = "+user);
-                float size= Float.parseFloat(request.getParameter("order_size"));
-                logger.info("size = "+size);
-                float volume=Float.parseFloat(request.getParameter("order_volume"));
-                logger.info("volume = "+volume);
-                float weight= Float.parseFloat(request.getParameter("order_weight"));
-                logger.info("weight = "+weight);
-                Date shipmentDate= null;
-                Date destinationDate= null;
-                try {
-                    shipmentDate = sdf.parse( request.getParameter("order_shipmentDate"));
-                    logger.info("shipmentDate = "+shipmentDate);
-                    destinationDate= sdf.parse(request.getParameter("order_destinationDate"));
-                    logger.info("destinationDate = "+destinationDate);
-                } catch (ParseException e) {
-                    //todo: fixme!!
-                    e.printStackTrace();
-                }
-                String shipmentpoint=request.getParameter("order_shipmentPoint");
-                logger.info("shipmentpoint = "+shipmentpoint);
-                String destinationpoint=request.getParameter("order_destinationPoint");
-                logger.info("destinationpoint = "+destinationpoint);
-                logger.info("addingOrder");
-
-                serviceFactory.getOrderService().addOrder(
-                        user,size,volume,weight,
-                        shipmentDate,
-                        destinationDate,
-                        shipmentpoint,
-                        destinationpoint,
-                        1
-                );
             }
+//            if(0==((String) requestStatus).compareTo("selected")){
+//
+//
+//
+//            }
+
 
         }else {
                 if (user.getRole() == User.Role.dispatcher) {
                     logger.info("getting lastOrdersList");
+                    request.setAttribute("distribute_status","list");
                     Order[] orders = serviceFactory.getOrderService().getUnsetOrders();
                     logger.info("lastOrderList length = " + orders.length);
                     request.setAttribute("distribute_list", orders);

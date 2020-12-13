@@ -62,7 +62,7 @@
                         <div>
                             <i class="icon icon-order"></i>
                         </div>
-                        <span>Distribute orders</span>
+                        <span> <fmt:message key="btn_distributeOrders"/></span>
                     </button >
                 </li>
             </stl:if>

@@ -47,17 +47,38 @@
                 <fmt:message key="prop_order_status_delivered"/>
             </stl:if>
             <stl:if test="${order.getStatus().ordinal() == 2}">
-                <fmt:message key="prop_order_status_reviewed"/>
+                <fmt:message key="prop_order_status_shipped"/>
             </stl:if>
             )</br>
         </stl:forEach>
     </stl:if>
 
+
+
     <stl:if test="${logged_USER.getRole().ordinal() == 2}">
-        <p>new orders of clients:</p>
-        <stl:forEach var="order" items="${distribute_list}" >
-            <br><stl:out value="${order}">  </stl:out></br>
-        </stl:forEach>
+
+        <stl:if test="${distribute_status == 'list'}">
+            <p> <fmt:message key="prop_last_orders_to_distribute"/></p>
+            <stl:forEach var="order" items="${distribute_list}" >
+                <br><stl:out value="${order}">  </stl:out>
+                <form action="controller" method="post">
+                    <input type="hidden" name="distribute_order" value=${order.getId()} >
+                    <input type="hidden" name="distribute_status" value="selected" >
+                    <button  type="submit"  name="button" value="distribute_cmd"> <fmt:message key="btn_distribute_review"/></button>
+                </form>
+                </br>
+            </stl:forEach>
+        </stl:if>
+
+        <stl:if test="${distribute_status == 'review'}">
+        order:
+            ${distribute_order_instance.toString()}
+        </stl:if>
+
+
+
+
+
 
     </stl:if>
 

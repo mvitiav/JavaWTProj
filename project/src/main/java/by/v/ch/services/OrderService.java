@@ -9,7 +9,11 @@ import java.util.Date;
 public interface OrderService {
     public boolean addOrder(User user, float size, float volume, float weight, Date shipmentDate, Date destinationDate, String shipmentpoint, String destinationpoint,int purposeId);
 
-    Order[] getOrdersOfUser(User user);
+    public Order getById(int id);
 
-    Order[] getUnsetOrders();
+    public Order[] getOrdersOfUser(User user);
+
+    public Order[] getUnsetOrders();
+
+
 }

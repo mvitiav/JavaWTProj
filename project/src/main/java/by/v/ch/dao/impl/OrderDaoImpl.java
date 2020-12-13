@@ -31,7 +31,7 @@ public class OrderDaoImpl implements OrderDao {
     private static final String DB_COLUMN_FINISHED = "finished";
     private static final String DB_COLUMN_PRICE = "price";
 
-    private static final String GET_ORDER_BY_ID_SQL = "SELECT * FROM new_schema.orders WHERE new_schema.orders.purpose_id = ?";
+    private static final String GET_ORDER_BY_ID_SQL = "SELECT * FROM new_schema.orders WHERE new_schema.orders.idorders = ?";
     private static final String ADD_ORDER_SQL = "INSERT INTO new_schema.orders (`client_id`, `size`, `volume`, `weight`, `shipment_date`, `destination_date`, `shipment_point`, `destination_point`) VALUES (?,?,?,?,?,?,?,?);";
     private static final String GET_ORDERS_OF_USER_SQL = "SELECT * FROM new_schema.orders WHERE new_schema.orders.client_id = ?";
     private static final String GET_UNSET_ORDERS = "SELECT * FROM new_schema.orders WHERE new_schema.orders.finished = 0";
